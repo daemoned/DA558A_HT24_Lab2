@@ -1,7 +1,11 @@
 let user = {}
 
 function checkQuiz(form) {
-    console.log(form);
+    let formData = new FormData(form);
+    console.log(Array.from(formData));
+
+    //
+
 }
 
 function buildQuiz() {
@@ -18,8 +22,6 @@ function buildQuiz() {
         
         // multiple choice, one answear
         if (!Array.isArray(e.correct) && e.answears != null) {
-            console.log(e)
-            console.log(Array.isArray(e.correct))
             e.answears.forEach(a => {
                 div.innerHTML += "<li><input type='radio' name='" + (index+1) + "' value='" + a + "'> " + a + "</li>"
             })
@@ -37,7 +39,7 @@ function buildQuiz() {
         div.innerHTML += "<br><br>"
         formElement.appendChild(div);
     });
-    formElement.innerHTML += "<input type='button' value='Check Quiz' onclick='checkQuiz(this.form)'>"
+    formElement.innerHTML += "<input id='btn' type='button' value='Check Quiz' onclick='checkQuiz(this.form)'>"
     boxElement.appendChild(formElement);
 
 }
@@ -63,7 +65,6 @@ function validateUser (form) {
         user.firstname = form.firstname.value;
         user.lastname = form.lastname.value;
         user.email = form.email.value;
-        console.log(user)
 
         const boxElement = document.getElementById("box");
         boxElement.innerHTML = '';
