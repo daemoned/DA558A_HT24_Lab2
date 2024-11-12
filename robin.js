@@ -1,32 +1,45 @@
 let user = {}
 
+function checkQuiz(form) {
+    console.log(form);
+}
+
 function buildQuiz() {
     const questions = JSON.parse(data);
     const boxElement = document.getElementById("box");
+    const formElement = document.createElement("form");
     questions.forEach((e, index) => {
         let div = document.createElement("div");
-        div.innerHTML = "<b>" + (index +1) + ". </b>" + e.question + "</br><ul>";
+        if (e.required) {
+            div.innerHTML = "<b>" + (index +1) + ". <i>" + e.question + "</i></b></br>";
+        } else {
+            div.innerHTML = "<b>" + (index +1) + ". </b>" + e.question + "</br>";
+        }
+        
         // multiple choice, one answear
         if (!Array.isArray(e.correct) && e.answears != null) {
             console.log(e)
             console.log(Array.isArray(e.correct))
             e.answears.forEach(a => {
-                div.innerHTML += "<li> O" + a + "</li>"
+                div.innerHTML += "<li><input type='radio' name='" + (index+1) + "' value='" + a + "'> " + a + "</li>"
             })
         }
         // multiple choice, multiple answears
         else if (Array.isArray(e.correct) && e.answears != null) {
             e.answears.forEach(a => {
-                div.innerHTML += "<li> []" + a + "</li>"
+                div.innerHTML += "<li><input type='checkbox' name='" + (index+1) + "' value='" + a + "'> " + a + "</li>"
             })
         }
         // text entry
         else {
-            div.innerHTML += "<li> ________ </li>"
+            div.innerHTML += "<li> <input type='text' name='" + (index+1) + "'> " + "</li>"
         }
-        div.innerHTML += "</ul><br><br>"
-        boxElement.appendChild(div);
+        div.innerHTML += "<br><br>"
+        formElement.appendChild(div);
     });
+    formElement.innerHTML += "<input type='button' value='Check Quiz' onclick='checkQuiz(this.form)'>"
+    boxElement.appendChild(formElement);
+
 }
 
 function validateUser (form) {
@@ -55,7 +68,7 @@ function validateUser (form) {
         const boxElement = document.getElementById("box");
         boxElement.innerHTML = '';
         const userElement = document.createElement("div");
-        userElement.innerHTML = "<p> Best of luck" + user.firstname + " " + user.lastname + " (" + user.email + ")</p>"
+        userElement.innerHTML = "<p> Best of luck" + user.firstname + " " + user.lastname + " (" + user.email + "). <b><i>Bold italic</b></i> questions must be answered.</p>"
         boxElement.appendChild(userElement);
         buildQuiz();
 
