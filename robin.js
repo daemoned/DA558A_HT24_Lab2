@@ -1,5 +1,33 @@
 let user = {}
 
+function buildQuiz() {
+    const questions = JSON.parse(data);
+    const boxElement = document.getElementById("box");
+    questions.forEach((e, index) => {
+        let div = document.createElement("div");
+        div.innerHTML = "<b>" + (index +1) + ". </b>" + e.question + "</br><ul>";
+        // multiple choice, one answear
+        if (!Array.isArray(e.correct) && e.answears != null) {
+            console.log(e)
+            console.log(Array.isArray(e.correct))
+            e.answears.forEach(a => {
+                div.innerHTML += "<li> O" + a + "</li>"
+            })
+        }
+        // multiple choice, multiple answears
+        else if (Array.isArray(e.correct) && e.answears != null) {
+            e.answears.forEach(a => {
+                div.innerHTML += "<li> []" + a + "</li>"
+            })
+        }
+        // text entry
+        else {
+            div.innerHTML += "<li> ________ </li>"
+        }
+        div.innerHTML += "</ul><br><br>"
+        boxElement.appendChild(div);
+    });
+}
 
 function validateUser (form) {
     let regexName = /^[a-zA-Z]+$/;
@@ -29,7 +57,7 @@ function validateUser (form) {
         const userElement = document.createElement("div");
         userElement.innerHTML = "<p> Best of luck" + user.firstname + " " + user.lastname + " (" + user.email + ")</p>"
         boxElement.appendChild(userElement);
-
+        buildQuiz();
 
     } else {
         // find error div and clear it
