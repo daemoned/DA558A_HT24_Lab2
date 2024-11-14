@@ -1,10 +1,35 @@
 let user = {}
 
-function checkQuiz(form) {
-    let formData = new FormData(form);
-    console.log(Array.from(formData));
+function checkQuiz(formInput) {
+    let form = new FormData(formInput);
+    let questions = JSON.parse(data);
+    let result = 0;
 
-    //
+    // checks if all required questions are answeared.
+    questions.forEach((e, index) => {
+        if (e.required === true) {
+            result++;
+            let answear = form.get((index+1).toString());
+            if (answear != null) {
+                result--;
+            }
+        }
+    })
+    
+    const errorElement = document.getElementById("error");
+    const btnElement = document.getElementById("btn");
+
+    if (result === 0) {
+        errorElement.innerHTML = "<div id='error'></div>";
+        btnElement.value = "Turn in Quiz";
+        btnElement.setAttribute("onclick","turnInQuiz(this.form)");
+    } else {
+        errorElement.innerHTML = "<div id='error'>You must answear all bold italic questions.</div>";
+    }
+   
+}
+
+function turnInQuiz(formInput) {
 
 }
 
@@ -39,6 +64,7 @@ function buildQuiz() {
         div.innerHTML += "<br><br>"
         formElement.appendChild(div);
     });
+    formElement.innerHTML += "<div id='error'></div>"
     formElement.innerHTML += "<input id='btn' type='button' value='Check Quiz' onclick='checkQuiz(this.form)'>"
     boxElement.appendChild(formElement);
 
@@ -69,7 +95,7 @@ function validateUser (form) {
         const boxElement = document.getElementById("box");
         boxElement.innerHTML = '';
         const userElement = document.createElement("div");
-        userElement.innerHTML = "<p> Best of luck" + user.firstname + " " + user.lastname + " (" + user.email + "). <b><i>Bold italic</b></i> questions must be answered.</p>"
+        userElement.innerHTML = "<p> Best of luck " + user.firstname + " " + user.lastname + " (" + user.email + "). <b><i>Bold italic</b></i> questions must be answered.</p>"
         boxElement.appendChild(userElement);
         buildQuiz();
 
