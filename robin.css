@@ -43,3 +43,11 @@ h1 {
 #error {
     color: red;
 }
+
+.wrong {
+    color: red;
+}
+
+.correct {
+    color: greenyellow;
+}

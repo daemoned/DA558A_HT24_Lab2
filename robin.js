@@ -34,23 +34,25 @@ function turnInQuiz(formInput) {
     let questions = JSON.parse(data);
 
     questions.forEach((e, index) => {
+        let questionElement = document.getElementById((index+1).toString());
+
         //check if multiple answears
         if (Array.isArray(e.correct)) {
             let answear = form.getAll((index+1).toString());
 
             // sort arrays and turn into strings for matching
             if (answear.sort().join() == e.correct.sort().join()) {
-                console.log("Question " + (index+1).toString() + " is correct! " + answear + " = " + e.correct)
+                questionElement.innerHTML += "<span class='correct'> Question is correct! " + answear + " = " + e.correct + "</span><br><br>";
             } else {
-                console.log("Question " + (index+1).toString() + " is wrong! " + answear + " = " + e.correct)
+                questionElement.innerHTML += "<span class='wrong'> Question is wrong! " + answear + " = " + e.correct + "</span><br><br>";
             }
 
         } else {
             let answear = form.get((index+1).toString());
             if (answear === e.correct) {
-                console.log("Question " + (index+1).toString() + " is correct! " + answear + " = " + e.correct)
+                questionElement.innerHTML += "<span class='correct'> Question is correct! " + answear + " = " + e.correct + "</span><br><br>";
             } else {
-                console.log("Question " + (index+1).toString() + " is wrong! " + answear + " = " + e.correct)
+                questionElement.innerHTML += "<span class='wrong'> Question is wrong! " + answear + " = " + e.correct + "</span><br><br>";
             }
         }
     })
@@ -63,6 +65,7 @@ function buildQuiz() {
     const formElement = document.createElement("form");
     questions.forEach((e, index) => {
         let div = document.createElement("div");
+        div.setAttribute("id", (index +1));
         if (e.required) {
             div.innerHTML = "<b>" + (index +1) + ". <i>" + e.question + "</i></b></br>";
         } else {
@@ -85,7 +88,7 @@ function buildQuiz() {
         else {
             div.innerHTML += "<li> <input type='text' name='" + (index+1) + "'> " + "</li>"
         }
-        div.innerHTML += "<br><br>"
+        div.innerHTML += "<br>"
         formElement.appendChild(div);
     });
     formElement.innerHTML += "<div id='error'></div>"
