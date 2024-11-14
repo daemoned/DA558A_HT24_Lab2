@@ -30,6 +30,30 @@ function checkQuiz(formInput) {
 }
 
 function turnInQuiz(formInput) {
+    let form = new FormData(formInput);
+    let questions = JSON.parse(data);
+
+    questions.forEach((e, index) => {
+        //check if multiple answears
+        if (Array.isArray(e.correct)) {
+            let answear = form.getAll((index+1).toString());
+
+            // sort arrays and turn into strings for matching
+            if (answear.sort().join() == e.correct.sort().join()) {
+                console.log("Question " + (index+1).toString() + " is correct! " + answear + " = " + e.correct)
+            } else {
+                console.log("Question " + (index+1).toString() + " is wrong! " + answear + " = " + e.correct)
+            }
+
+        } else {
+            let answear = form.get((index+1).toString());
+            if (answear === e.correct) {
+                console.log("Question " + (index+1).toString() + " is correct! " + answear + " = " + e.correct)
+            } else {
+                console.log("Question " + (index+1).toString() + " is wrong! " + answear + " = " + e.correct)
+            }
+        }
+    })
 
 }
 
